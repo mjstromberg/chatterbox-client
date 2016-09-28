@@ -29,16 +29,19 @@
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
       <span>Room: </span>
-      <select id="roomSelect" name="roomMenu" onchange="roomChange()">
+      <select id="roomSelect" name="roomMenu" onchange="app.roomChange()">
         <option id="#createNew">Create New Room</option>
         <option selected="true">Lobby</option>
       </select>
-      <form>
+      <form id="chatForm">
         <input type="text" name="chatInput" placeholder="Enter chat here">
-        <input type="submit" onclick="app.send()" value="Submit">
+        <input id="subButton" type="submit" value="Submit">
       </form>
       <!-- <button type="button" class="button">Submit</button> -->
     </div>
     <div id="chats"></div>
+    <script>
+      app.init();
+    </script>
   </body>
 </html>
