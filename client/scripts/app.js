@@ -88,15 +88,22 @@ var app = {
   },
 
   renderMessage: function(dataObject) {
-    var encoded = {
-      username: encodeURIComponent(dataObject.username),
-      text: encodeURIComponent(dataObject.text)
-    };
+    var $chat = $('<div class="chat"></div>');
+    var $username = $('<div class="username"></div>');
+    var $text = $('<div class="chat"></div>');
 
-    var nameDiv = "<div class=\"username\">@" + encoded.username + "</div>";
-    var textDiv = "<div class=\"chat\">" + encoded.text + "</div>";
-    // var roomDiv = "<div class="chat>" + encoded.roomname + "</div>";
-    $('#chats').append("<div class=\"chat\">" + nameDiv + textDiv + "</div>");
+    $username.text('@' + dataObject.username).appendTo($username);
+    $text.text(dataObject.text).appendTo($text);
+    $chat.append($username, $text);
+
+    $('#chats').append($chat);
+
+    // dataObject.username
+    // dataObject.text
+
+    // var nameDiv = "<div class='username'>@" + encoded.username + "</div>";
+    // var textDiv = "<div class='chat'>" + encoded.text + "</div>";
+    // $('#chats').append("<div class='chat'>" + nameDiv + textDiv + "</div>");
   },
 
   renderRoom: function(roomName) {
