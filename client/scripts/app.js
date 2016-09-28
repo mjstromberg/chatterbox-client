@@ -9,7 +9,6 @@ var getChats = function(data) {
   app.clearMessages();
 
   // loop through each item in data.results
-  console.log('data: ', data);
   data.results.forEach(function(obj) {
     // if new room, add to select element
     if (!rooms.hasOwnProperty(obj.roomname)) {
@@ -33,11 +32,21 @@ var getChats = function(data) {
 
 var app = {
   init: function() {
-    // on submit listener
+    // variables
+    app.friendsList = {};
+
+    // listeners
     $('#chatForm').submit(function(event) {
       app.send();
       event.preventDefault();
     });
+
+    $('body').on('click', '.username', function(event) {
+      var friendUsername = event.target.textContent.slice(1);
+      app.addFriend(friendUsername);
+    });
+
+
 
     // GET requests
     setInterval(function() {
@@ -67,13 +76,10 @@ var app = {
       }
         
     });
-    
-    // re-fetch the updated database
   },
 
   fetch: function() {
     // get request
-    // $.get('https://api.parse.com/1/classes/messages', getChats);
     $.ajax({
       url: 'https://api.parse.com/1/classes/messages',
       type: 'GET',
@@ -96,14 +102,11 @@ var app = {
     $text.text(dataObject.text).appendTo($text);
     $chat.append($username, $text);
 
+    if (dataObject.username in app.friendsList) {
+      $chat.css('font-weight', 'bold');
+    }
+
     $('#chats').append($chat);
-
-    // dataObject.username
-    // dataObject.text
-
-    // var nameDiv = "<div class='username'>@" + encoded.username + "</div>";
-    // var textDiv = "<div class='chat'>" + encoded.text + "</div>";
-    // $('#chats').append("<div class='chat'>" + nameDiv + textDiv + "</div>");
   },
 
   renderRoom: function(roomName) {
@@ -129,15 +132,13 @@ var app = {
     app.clearMessages();
     lastChatTimeStamp = 0;
     app.fetch();
+  },
+
+  addFriend: function(username) {
+    app.friendsList[username] = true;
+    console.log(app.friendsList);
   }
-
-
 };
-
-
-
-
-
 
 /* PLAN
 
