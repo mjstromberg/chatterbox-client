@@ -5,6 +5,9 @@ var currentRoom = 'Lobby';
 
 
 var getChats = function(data) {
+  // clear chatroom
+  app.clearMessages();
+
   // loop through each item in data.results
   console.log('data: ', data);
   data.results.forEach(function(obj) {
@@ -15,13 +18,13 @@ var getChats = function(data) {
     }
 
     // append each chat to the DOM in a div with a class of chats
-    if (Date.parse(obj.createdAt) > lastChatTimeStamp) {
-      if (currentRoom === 'Lobby') {
-        app.renderMessage(obj);
-      } else if (obj.roomname === currentRoom) {
-        app.renderMessage(obj);
-      }
+    // if (Date.parse(obj.createdAt) > lastChatTimeStamp) {
+    if (currentRoom === 'Lobby') {
+      app.renderMessage(obj);
+    } else if (obj.roomname === currentRoom) {
+      app.renderMessage(obj);
     }
+    
   });
 
   // reset lastChatTimeStamp to the latest chat
@@ -30,7 +33,7 @@ var getChats = function(data) {
 
 var app = {
   init: function() {
-    // on submit handler
+    // on submit listener
     $('#chatForm').submit(function(event) {
       app.send();
       event.preventDefault();
@@ -45,9 +48,6 @@ var app = {
   server: 'https://api.parse.com/1/classes/messages',
 
   send: function(data) {
-    // clear chatroom
-    // app.clearMessages();
-
     // Grab the input node and extract the input value
     var inputText = $('input[name="chatInput"]').val();
     // POST
@@ -63,7 +63,6 @@ var app = {
       data: JSON.stringify(data),
       contentType: 'application/json',
       success: function() {
-        alert(currentRoom);
         app.fetch();
       }
         
